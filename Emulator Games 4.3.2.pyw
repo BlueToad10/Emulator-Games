@@ -22,7 +22,7 @@ icon = pygame.transform.scale(pygame.image.load('GameBoy.png'), (32, 32))
 pygame.display.set_icon(icon)
 windowSurface = pygame.display.set_mode(WINDOWSIZE)
 mainClock = pygame.time.Clock()
-pygame.mixer.music.load("Super Paper Mario OST - Lineland Road.mp3")
+pygame.mixer.music.load("4.0.mp3")
 pygame.mixer.music.play(-1, 0.0)
 pygame.mixer.music.pause()
 
