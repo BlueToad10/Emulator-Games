@@ -6,10 +6,10 @@ from DrawTextFileFont import *
 
 WINDOWSIZE = (720, 480)
 BACKGROUNDCOLOR = (0, 0, 0)
-LEFT=1
+LEFT=musicSelect=1
 RIGHT=3
 FPS=60
-PAGE=NUMBER=gamesNum=systemNum=nesNum=snesNum=n64Num=gbNum=gbaNum=gcwiiNum=musicNum=musicSelect=0
+PAGE=NUMBER=gamesNum=systemNum=nesNum=snesNum=n64Num=gbNum=gbaNum=gcwiiNum=musicNum=0
 Branch = "System"
 GameName = ""
 MaxNum=6
@@ -75,7 +75,6 @@ for object in os.listdir():
     elif str(object).endswith(".mp3"):
         musicList.append(object)
         musicNum += 1
-        print(str(object))
 system = []
 if nesNum > 0:
     system.append("Nintendo Entertainment System")
@@ -249,12 +248,19 @@ def controls():
                 if musicSelect > musicNum - 1:
                     musicSelect = 0
                 pygame.mixer.music.load(musicList[musicSelect])
-                pygame.mixer.music.play()
+                pygame.mixer.music.play(-1, 0.0)
                 musicamajig.changeMusic()
         if event.type == KEYDOWN:
             if event.key == ord('m'):
                 MusicSwitch = True
                 musicamajig.update()
+            if event.key == ord('o'):
+                musicSelect += 1
+                if musicSelect > musicNum - 1:
+                    musicSelect = 0
+                pygame.mixer.music.load(musicList[musicSelect])
+                pygame.mixer.music.play()
+                musicamajig.changeMusic()
             if event.key == K_ESCAPE:
                 if PAGE == 0:
                     terminate()
