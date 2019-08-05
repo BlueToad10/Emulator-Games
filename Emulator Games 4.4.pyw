@@ -17,7 +17,7 @@ MusicSwitch=False
 
 pygame.init()
 pygame.mixer.init()
-pygame.display.set_caption("Emulator Games 4.4")
+pygame.display.set_caption("Emulator Games 4.4.1")
 icon = pygame.transform.scale(pygame.image.load('GameBoy.png'), (32, 32))
 pygame.display.set_icon(icon)
 windowSurface = pygame.display.set_mode(WINDOWSIZE)
@@ -299,11 +299,11 @@ def controls():
                         os.startfile(str(gba[NUMBER]))
                     elif Branch == "GameCube and Wii":
                         os.startfile(str(gcWii[NUMBER]))
-            if event.key == K_LEFT:
+            if event.key == K_LEFT or event.key == K_UP:
                 NUMBER -= 1
                 if NUMBER < 0:
                     NUMBER = 0
-            if event.key == K_RIGHT:
+            if event.key == K_RIGHT or event.key == K_DOWN:
                 if Branch == "System":
                     MaxNum = systemNum
                 elif Branch == "Nintendo Entertainment System":
@@ -351,22 +351,22 @@ def systemSelect():
         background_list3.draw(windowSurface)
         select_list.draw(windowSurface)
         if NUMBER > 3:
-            DrawText(str(system[NUMBER - 4]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 0, 720, 480)
+            DrawText(str(system[NUMBER - 4]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 0, 720, 480)
         if NUMBER > 2:
-            DrawText(str(system[NUMBER - 3]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 40, 720, 480)
+            DrawText(str(system[NUMBER - 3]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 40, 720, 480)
         if NUMBER > 1:
-            DrawText(str(system[NUMBER - 2]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 80, 720, 480)
+            DrawText(str(system[NUMBER - 2]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 80, 720, 480)
         if NUMBER > 0:
-            DrawText(str(system[NUMBER - 1]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 120, 720, 480)
+            DrawText(str(system[NUMBER - 1]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 120, 720, 480)
         DrawText(str(system[NUMBER]), "moon_get-Heavy.ttf", 32, (255, 255, 255), windowSurface, 125, 150, 720, 480)
         if NUMBER < MaxNum - 1:
-            DrawText(str(system[NUMBER + 1]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 260, 720, 480)
+            DrawText(str(system[NUMBER + 1]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 260, 720, 480)
         if NUMBER < MaxNum - 2:
-            DrawText(str(system[NUMBER + 2]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 300, 720, 480)
+            DrawText(str(system[NUMBER + 2]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 300, 720, 480)
         if NUMBER < MaxNum - 3:
-            DrawText(str(system[NUMBER + 3]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 340, 720, 480)
+            DrawText(str(system[NUMBER + 3]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 340, 720, 480)
         if NUMBER < MaxNum - 4:
-            DrawText(str(system[NUMBER + 4]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 380, 720, 480)
+            DrawText(str(system[NUMBER + 4]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 380, 720, 480)
         mainLoop()
 
 def gameSelect():
@@ -376,9 +376,6 @@ def gameSelect():
     NUMBER=0
     while True:
         background_list.draw(windowSurface)
-        background_list2.draw(windowSurface)
-        background_list3.draw(windowSurface)
-        select_list.draw(windowSurface)
         if Branch == "Nintendo Entertainment System":
             GameName = nesGames
         elif Branch == "Super Nintendo Entertainment System":
@@ -393,22 +390,25 @@ def gameSelect():
             GameName = gcWiiGames
         
         if NUMBER > 3:
-            DrawText(str(GameName[NUMBER - 4]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 0, 720, 480)
+            DrawText(str(GameName[NUMBER - 4]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 0, 720, 40)
         if NUMBER > 2:
-            DrawText(str(GameName[NUMBER - 3]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 40, 720, 480)
+            DrawText(str(GameName[NUMBER - 3]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 40, 720, 80)
         if NUMBER > 1:
-            DrawText(str(GameName[NUMBER - 2]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 80, 720, 480)
+            DrawText(str(GameName[NUMBER - 2]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 80, 720, 120)
         if NUMBER > 0:
-            DrawText(str(GameName[NUMBER - 1]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 120, 720, 480)
-        DrawText(GameName[NUMBER], "moon_get-Heavy.ttf", 32, (255, 255, 255), windowSurface, 50, 150, 720, 480)
+            DrawText(str(GameName[NUMBER - 1]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 120, 720, 150)
+        DrawText(GameName[NUMBER], "moon_get-Heavy.ttf", 32, (255, 255, 255), windowSurface, 20, 150, 720, 260)
         if NUMBER < MaxNum - 1:
-            DrawText(str(GameName[NUMBER + 1]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 260, 720, 480)
+            DrawText(str(GameName[NUMBER + 1]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 260, 720, 300)
         if NUMBER < MaxNum - 2:
-            DrawText(str(GameName[NUMBER + 2]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 300, 720, 480)
+            DrawText(str(GameName[NUMBER + 2]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 300, 720, 340)
         if NUMBER < MaxNum - 3:
-            DrawText(str(GameName[NUMBER + 3]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 340, 720, 480)
+            DrawText(str(GameName[NUMBER + 3]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 340, 720, 380)
         if NUMBER < MaxNum - 4:
-            DrawText(str(GameName[NUMBER + 4]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 175, 380, 720, 480)
+            DrawText(str(GameName[NUMBER + 4]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 380, 720, 480)
+        background_list2.draw(windowSurface)
+        background_list3.draw(windowSurface)
+        select_list.draw(windowSurface)
         mainLoop()
 
 background_list.add(background(backgroundImage))
