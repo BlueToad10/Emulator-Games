@@ -304,23 +304,29 @@ def controls():
                 if NUMBER < 0:
                     NUMBER = 0
             if event.key == K_RIGHT or event.key == K_DOWN:
-                if Branch == "System":
-                    MaxNum = systemNum
-                elif Branch == "Nintendo Entertainment System":
-                    MaxNum = nesNum
-                elif Branch == "Super Nintendo Entertainment System":
-                    MaxNum = snesNum
-                elif Branch == "Nintendo 64":
-                    MaxNum = n64Num
-                elif Branch == "GameBoy":
-                    MaxNum = gbNum
-                elif Branch == "GameBoy Advance":
-                    MaxNum = gbaNum
-                elif Branch == "GameCube and Wii":
-                    MaxNum = gcwiiNum
                 NUMBER += 1
-                if NUMBER >= MaxNum - 1:
-                    NUMBER = MaxNum - 1
+                numcheckplz()
+
+def numcheckplz():
+    global NUMBER, Branch, nesNum, snesNum, n64Num, gbNum, gbaNum, MaxNum, PAGE, gamesNum, systemNum, MusicSwitch, musicSelect, musicNum 
+    if Branch == "System":
+        MaxNum = systemNum
+    elif Branch == "Nintendo Entertainment System":
+        MaxNum = nesNum
+    elif Branch == "Super Nintendo Entertainment System":
+        MaxNum = snesNum
+    elif Branch == "Nintendo 64":
+        MaxNum = n64Num
+    elif Branch == "GameBoy":
+        MaxNum = gbNum
+    elif Branch == "GameBoy Advance":
+        MaxNum = gbaNum
+    elif Branch == "GameCube and Wii":
+        MaxNum = gcwiiNum
+    if NUMBER >= MaxNum - 1:
+        NUMBER = MaxNum - 1
+    if NUMBER < 0:
+        NUMBER = 0
 
 def mainLoop():
     pygame.display.update()
@@ -341,10 +347,11 @@ def titleScreen():
         mainLoop()
 
 def systemSelect():
-    global PAGE, NUMBER, Branch, MaxNum
+    global PAGE, NUMBER, Branch, MaxNum, systemNum
     PAGE=1
     NUMBER=0
     Branch = "System"
+    numcheckplz()
     while True:
         background_list.draw(windowSurface)
         background_list2.draw(windowSurface)
@@ -378,17 +385,23 @@ def gameSelect():
         background_list.draw(windowSurface)
         if Branch == "Nintendo Entertainment System":
             GameName = nesGames
+            numcheckplz()
         elif Branch == "Super Nintendo Entertainment System":
             GameName = snesGames
+            numcheckplz()
         elif Branch == "Nintendo 64":
             GameName = n64Games
+            numcheckplz()
         elif Branch == "GameBoy":
             GameName = gbGames
+            numcheckplz()
         elif Branch == "GameBoy Advance":
             GameName = gbaGames
+            numcheckplz()
         elif Branch == "GameCube and Wii":
             GameName = gcWiiGames
-        
+            numcheckplz()
+
         if NUMBER > 3:
             DrawText(str(GameName[NUMBER - 4]), "moon_get-Heavy.ttf", 16, (255, 255, 255), windowSurface, 135, 0, 720, 40)
         if NUMBER > 2:
