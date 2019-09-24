@@ -1,4 +1,4 @@
-# Emulator-Games-4
+# Emulator-Games
 #Made by BlueToad10
 #
 #When using this make sure the roms you use open automaticly with their respective emulators.
