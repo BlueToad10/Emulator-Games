@@ -227,11 +227,12 @@ def controls():
                 back.backbutton()
                 enter.enterbutton()
                 settings.settingsbutton()
-                theme_button.themebutton()
-                musicamajig.musicbutton()
                 left.leftbutton()
                 right.rightbutton()
-                screen.screenbutton(False)
+                if PAGE == 3:
+                    theme_button.themebutton()
+                    musicamajig.musicbutton()
+                    screen.screenbutton(False)
             if event.button == RIGHT and musicNum > 1:
                 musicamajig.changeMusic()
         if event.type == KEYDOWN:
