@@ -235,6 +235,16 @@ def controls():
                     screen.screenbutton(False)
             if event.button == RIGHT and musicNum > 1:
                 musicamajig.changeMusic()
+        if event.type == pygame.QUIT:
+            if PAGE == 0:
+                terminate()
+            elif PAGE == 1:
+                titleScreen()
+            elif PAGE == 2:
+                systemSelect()
+            elif PAGE == 3:
+                settingsSave()
+                titleScreen()
         if event.type == KEYDOWN:
             if event.key == ord('m'):
                 MusicSwitch = True
