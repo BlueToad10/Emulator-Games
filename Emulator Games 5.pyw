@@ -5,7 +5,7 @@ from assets.python.waitForPlayerToPressKey import *
 from assets.python.DrawTextFileFont import *
 from assets.python.keyboardInput import *
 
-version = "Emulator Games 5.1.0"
+version = "Emulator Games 5.1.4"
 WINDOWSIZE = (720, 480)
 BACKGROUNDCOLOR = (0, 0, 0)
 TEXTCOLOUR = (255, 255, 255)
@@ -19,7 +19,7 @@ pause=True
 
 pygame.init()
 pygame.mixer.init()
-pygame.display.set_caption("version")
+pygame.display.set_caption(version)
 icon = pygame.image.load('assets\\icon.png')
 pygame.display.set_icon(icon)
 windowSurface = pygame.display.set_mode(WINDOWSIZE)
@@ -100,7 +100,7 @@ class window(pygame.sprite.Sprite):
                 terminate()
             elif PAGE == 1:
                 titleScreen()
-            elif PAGE == 2:
+            elif PAGE == 2 or PAGE == 4 or PAGE == 5:
                 systemSelect()
             elif PAGE == 3:
                 settingsSave()
@@ -118,11 +118,11 @@ class window(pygame.sprite.Sprite):
     def settingsbutton(self):
         global PAGE
         if pygame.sprite.spritecollideany(self, select_list):
-            if PAGE == 0:
-                settingsScreen()
-            elif PAGE == 3:
+            if PAGE == 3:
                 settingsSave()
                 titleScreen()
+            else:
+                settingsScreen()
     def leftbutton(self):
         global PAGE, NUMBER
         if pygame.sprite.spritecollideany(self, select_list):
@@ -181,6 +181,8 @@ class window(pygame.sprite.Sprite):
                 gameSelect()
             elif PAGE == 2:
                 startrom()
+            elif PAGE == 5:
+                os.startfile(str(SearchList[NUMBER]))
     def background(self):
         self.rect.x = self.rect.x - 1
         if self.rect.x <= -768:
@@ -244,16 +246,8 @@ def controls():
                     screen.screenbutton(False)
             if event.button == RIGHT and musicNum > 1:
                 musicamajig.changeMusic()
-        if event.type == pygame.QUIT:
-            if PAGE == 0:
-                terminate()
-            elif PAGE == 1:
-                titleScreen()
-            elif PAGE == 2:
-                systemSelect()
-            elif PAGE == 3:
-                settingsSave()
-                titleScreen()
+        if event.type == QUIT:
+            terminate()
         if event.type == KEYDOWN:
             if event.key == ord('m'):
                 MusicSwitch = True
@@ -270,7 +264,7 @@ def controls():
                     terminate()
                 elif PAGE == 1:
                     titleScreen()
-                elif PAGE == 2 or PAGE == 4:
+                elif PAGE == 2 or PAGE == 4 or PAGE == 5:
                     systemSelect()
                 elif PAGE == 3:
                     settingsSave()
@@ -282,7 +276,7 @@ def controls():
                     gameSelect()
                 elif PAGE == 2:
                     startrom()
-                elif PAGE == 4:
+                elif PAGE == 5:
                     os.startfile(str(SearchList[NUMBER]))
             if event.key == K_LEFT or event.key == K_UP:
                 NUMBER -= 1
@@ -351,6 +345,7 @@ def systemSelect():
         mainLoop()
 
 def keyboardInput(x, y, Mx, My, letterLimit, fontType, fontSize, textcolour, surface):
+    global NUMBER, PAGE, MusicSwitch, musicSelect, musicNum
     WORD = ""
     while True:
         pygame.display.update()
@@ -362,7 +357,34 @@ def keyboardInput(x, y, Mx, My, letterLimit, fontType, fontSize, textcolour, sur
         mainClock.tick(FPS)
         pygame.display.update()
         for event in pygame.event.get():
+            if event.type == MOUSEMOTION:
+                select_list.update(event.pos[0], event.pos[1])
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == LEFT:
+                    back.backbutton()
+                    enter.enterbutton()
+                    settings.settingsbutton()
+                    left.leftbutton()
+                    right.rightbutton()
+                    if PAGE == 3:
+                        theme_button.themebutton()
+                        musicamajig.musicbutton()
+                        screen.screenbutton(False)
+                if event.button == RIGHT and musicNum > 1:
+                    musicamajig.changeMusic()
+            if event.type == QUIT:
+                terminate()
             if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    if PAGE == 0:
+                        terminate()
+                    elif PAGE == 1:
+                        titleScreen()
+                    elif PAGE == 2 or PAGE == 4 or PAGE == 5:
+                        systemSelect()
+                    elif PAGE == 3:
+                        settingsSave()
+                        titleScreen()
                 if event.key == ord('a'):
                     WORD += "a"
                 if event.key == ord('b'):
@@ -469,6 +491,7 @@ def gameSelect():
         searchList(SearchName, SearchName)
         NUMBER=0
         MaxNum=Searchmaxnum
+        PAGE = 5
         while True:
             if Searchmaxnum < 0:
                 systemSelect()
