@@ -12,5 +12,5 @@ def fileSubFolderConvert(directory, oldFileType, newFileType):
             s.close()
             os.remove(str(directory) + "\\" + str(object))
         
-fileSubFolderConvert("build\\exe.win-amd64-3.6lib\\pygame\\docs", ".html", ".txt")
-fileSubFolderConvert("build\\exe.win-amd64-3.6lib\\pygame", ".html", ".txt")
+fileSubFolderConvert("lib\\pygame\\docs", ".html", ".txt")
+fileSubFolderConvert("lib\\pygame", ".html", ".txt")
