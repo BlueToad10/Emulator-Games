@@ -3,7 +3,9 @@ from pygame.locals import *
 from assets.python.terminate import *
 from assets.python.waitForPlayerToPressKey import *
 from assets.python.DrawTextFileFont import *
+from assets.python.keyboardInput import *
 
+version = "Emulator Games 5.1.0"
 WINDOWSIZE = (720, 480)
 BACKGROUNDCOLOR = (0, 0, 0)
 TEXTCOLOUR = (255, 255, 255)
@@ -17,7 +19,7 @@ pause=True
 
 pygame.init()
 pygame.mixer.init()
-pygame.display.set_caption("Emulator Games 5")
+pygame.display.set_caption("version")
 icon = pygame.image.load('assets\\icon.png')
 pygame.display.set_icon(icon)
 windowSurface = pygame.display.set_mode(WINDOWSIZE)
@@ -43,6 +45,13 @@ selectImage = pygame.image.load('assets\\Select.png')
 systems=[]
 system=[]
 gameslist=[]
+systems.append("Search")
+system.append("Search")
+systemNum += 1
+Searchmaxnum=-1
+Search = []
+SearchList = []
+SearchName = ""
 class lists():
     def __init__(self, name, nameAgain):
         global systemNum, gamesNum, PAGE
@@ -261,7 +270,7 @@ def controls():
                     terminate()
                 elif PAGE == 1:
                     titleScreen()
-                elif PAGE == 2:
+                elif PAGE == 2 or PAGE == 4:
                     systemSelect()
                 elif PAGE == 3:
                     settingsSave()
@@ -273,6 +282,8 @@ def controls():
                     gameSelect()
                 elif PAGE == 2:
                     startrom()
+                elif PAGE == 4:
+                    os.startfile(str(SearchList[NUMBER]))
             if event.key == K_LEFT or event.key == K_UP:
                 NUMBER -= 1
                 if NUMBER < 0:
@@ -339,34 +350,173 @@ def systemSelect():
         page_list.draw(windowSurface)
         mainLoop()
 
+def keyboardInput(x, y, Mx, My, letterLimit, fontType, fontSize, textcolour, surface):
+    WORD = ""
+    while True:
+        pygame.display.update()
+        sheikahtext.background()
+        main_list.draw(windowSurface)
+        select_list.draw(windowSurface)
+        DrawText("Type 1 keyword to search", fontType, 32, textcolour, windowSurface, x, y-48, Mx, My)
+        DrawText(WORD, fontType, 32, textcolour, windowSurface, x, y, Mx, My)
+        mainClock.tick(FPS)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                if event.key == ord('a'):
+                    WORD += "a"
+                if event.key == ord('b'):
+                    WORD += "b"
+                if event.key == ord('c'):
+                    WORD += "c"
+                if event.key == ord('d'):
+                    WORD += "d"
+                if event.key == ord('e'):
+                    WORD += "e"
+                if event.key == ord('f'):
+                    WORD += "f"
+                if event.key == ord('g'):
+                    WORD += "g"
+                if event.key == ord('h'):
+                    WORD += "h"
+                if event.key == ord('i'):
+                    WORD += "i"
+                if event.key == ord('j'):
+                    WORD += "j"
+                if event.key == ord('k'):
+                    WORD += "k"
+                if event.key == ord('l'):
+                    WORD += "l"
+                if event.key == ord('m'):
+                    WORD += "m"
+                if event.key == ord('n'):
+                    WORD += "n"
+                if event.key == ord('o'):
+                    WORD += "o"
+                if event.key == ord('p'):
+                    WORD += "p"
+                if event.key == ord('q'):
+                    WORD += "q"
+                if event.key == ord('r'):
+                    WORD += "r"
+                if event.key == ord('s'):
+                    WORD += "s"
+                if event.key == ord('t'):
+                    WORD += "t"
+                if event.key == ord('u'):
+                    WORD += "u"
+                if event.key == ord('v'):
+                    WORD += "v"
+                if event.key == ord('w'):
+                    WORD += "w"
+                if event.key == ord('x'):
+                    WORD += "x"
+                if event.key == ord('y'):
+                    WORD += "y"
+                if event.key == ord('z'):
+                    WORD += "z"
+                if event.key == ord('1'):
+                    WORD += "1"
+                if event.key == ord('2'):
+                    WORD += "2"
+                if event.key == ord('3'):
+                    WORD += "3"
+                if event.key == ord('4'):
+                    WORD += "4"
+                if event.key == ord('5'):
+                    WORD += "5"
+                if event.key == ord('6'):
+                    WORD += "6"
+                if event.key == ord('7'):
+                    WORD += "7"
+                if event.key == ord('8'):
+                    WORD += "8"
+                if event.key == ord('9'):
+                    WORD += "9"
+                if event.key == ord('0'):
+                    WORD += "0"
+                if event.key == K_BACKSPACE:
+                    WORD = WORD[:-1]
+                if event.key == K_SPACE:
+                    WORD += " "
+                WORD = WORD[:letterLimit]
+                if event.key == K_RETURN:
+                    return WORD
+
+class searchList():
+    def __init__(self, name, nameAgain):
+        global Searchmaxnum, Search, SearchList
+        Searchmaxnum=-1
+        Search = []
+        SearchList = []
+        SearchName = ""
+        for object in os.listdir("roms"):
+            self.filename = "roms\\" + str(object)
+            self.nameAgain = nameAgain
+            for object in os.listdir(str(self.filename)):
+                if any(self.nameAgain.lower() in word and len(word) > 1 for word in object.lower().split()) == True:
+                    Search.append(object)
+                    SearchList.append(str(self.filename) + "\\" + str(object))
+                    Searchmaxnum += 1
+
 def gameSelect():
     global PAGE, NUMBER, GameName, MaxNum, TEXTCOLOUR, systemNUMBER
-    PAGE=2
     systemNUMBER = NUMBER
     GameName = systems[NUMBER]
-    MaxNum = lists(system[NUMBER], system[NUMBER]).maxnum
-    NUMBER=0
-    while True:
-        if NUMBER > 3:
-            DrawText(os.path.splitext(str(GameName[NUMBER - 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 0, 720, 40)
-        if NUMBER > 2:
-            DrawText(os.path.splitext(str(GameName[NUMBER - 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 40, 720, 80)
-        if NUMBER > 1:
-            DrawText(os.path.splitext(str(GameName[NUMBER - 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 80, 720, 120)
-        if NUMBER > 0:
-            DrawText(os.path.splitext(str(GameName[NUMBER - 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 120, 720, 150)
-        DrawText(os.path.splitext(GameName[NUMBER])[0], font, 32, TEXTCOLOUR, windowSurface, 20, 150, 720, 260)
-        if NUMBER < MaxNum - 1:
-            DrawText(os.path.splitext(str(GameName[NUMBER + 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 260, 720, 300)
-        if NUMBER < MaxNum - 2:
-            DrawText(os.path.splitext(str(GameName[NUMBER + 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 300, 720, 340)
-        if NUMBER < MaxNum - 3:
-            DrawText(os.path.splitext(str(GameName[NUMBER + 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 340, 720, 380)
-        if NUMBER < MaxNum - 4:
-            DrawText(os.path.splitext(str(GameName[NUMBER + 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 380, 720, 480)
-        page_list.draw(windowSurface)
-        select_list.draw(windowSurface)
-        mainLoop()
+    if GameName == "Search":
+        PAGE = 4
+        SearchName = keyboardInput(20, 150, 700, 460, 32, font, 32, TEXTCOLOUR, windowSurface)
+        searchList(SearchName, SearchName)
+        NUMBER=0
+        MaxNum=Searchmaxnum
+        while True:
+            if Searchmaxnum < 0:
+                systemSelect()
+            if NUMBER > 3:
+                DrawText(os.path.splitext(str(Search[NUMBER - 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 0, 720, 40)
+            if NUMBER > 2:
+                DrawText(os.path.splitext(str(Search[NUMBER - 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 40, 720, 80)
+            if NUMBER > 1:
+                DrawText(os.path.splitext(str(Search[NUMBER - 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 80, 720, 120)
+            if NUMBER > 0:
+                DrawText(os.path.splitext(str(Search[NUMBER - 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 120, 720, 150)
+            DrawText(os.path.splitext(Search[NUMBER])[0], font, 32, TEXTCOLOUR, windowSurface, 20, 150, 720, 260)
+            if NUMBER < MaxNum - 1:
+                DrawText(os.path.splitext(str(Search[NUMBER + 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 260, 720, 300)
+            if NUMBER < MaxNum - 2:
+                DrawText(os.path.splitext(str(Search[NUMBER + 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 300, 720, 340)
+            if NUMBER < MaxNum - 3:
+                DrawText(os.path.splitext(str(Search[NUMBER + 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 340, 720, 380)
+            if NUMBER < MaxNum - 4:
+                DrawText(os.path.splitext(str(Search[NUMBER + 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 380, 720, 480)
+            page_list.draw(windowSurface)
+            select_list.draw(windowSurface)
+            mainLoop()
+    else:
+        PAGE=2
+        MaxNum = lists(system[NUMBER], system[NUMBER]).maxnum
+        NUMBER=0
+        while True:
+            if NUMBER > 3:
+                DrawText(os.path.splitext(str(GameName[NUMBER - 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 0, 720, 40)
+            if NUMBER > 2:
+                DrawText(os.path.splitext(str(GameName[NUMBER - 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 40, 720, 80)
+            if NUMBER > 1:
+                DrawText(os.path.splitext(str(GameName[NUMBER - 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 80, 720, 120)
+            if NUMBER > 0:
+                DrawText(os.path.splitext(str(GameName[NUMBER - 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 120, 720, 150)
+            DrawText(os.path.splitext(GameName[NUMBER])[0], font, 32, TEXTCOLOUR, windowSurface, 20, 150, 720, 260)
+            if NUMBER < MaxNum - 1:
+                DrawText(os.path.splitext(str(GameName[NUMBER + 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 260, 720, 300)
+            if NUMBER < MaxNum - 2:
+                DrawText(os.path.splitext(str(GameName[NUMBER + 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 300, 720, 340)
+            if NUMBER < MaxNum - 3:
+                DrawText(os.path.splitext(str(GameName[NUMBER + 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 340, 720, 380)
+            if NUMBER < MaxNum - 4:
+                DrawText(os.path.splitext(str(GameName[NUMBER + 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 380, 720, 480)
+            page_list.draw(windowSurface)
+            select_list.draw(windowSurface)
+            mainLoop()
 
 musicamajig = window(button_list[4], 580, 120, 60, 60, False)
 screen = window(button_list[9], 300, 200, 60, 60, False)
