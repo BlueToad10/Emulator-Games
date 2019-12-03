@@ -1,4 +1,5 @@
+skin 0
 theme = darkTheme 
 pausefalse 
-musicnum 5
-isFullscreen False
+musicSelect 5
+isFullscreen False 

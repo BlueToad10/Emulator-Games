@@ -5,7 +5,7 @@ from assets.python.waitForPlayerToPressKey import *
 from assets.python.DrawTextFileFont import *
 from assets.python.keyboardInput import *
 
-version = "Emulator Games 5.1.5"
+version = "Emulator Games 5.2.1"
 WINDOWSIZE = (720, 480)
 BACKGROUNDCOLOR = (0, 0, 0)
 TEXTCOLOUR = (255, 255, 255)
@@ -41,6 +41,47 @@ for object in sorted(os.listdir("assets\\buttons"), key=len):
     button_list.append(pygame.image.load("assets\\buttons\\" + object))
 theme=button_list[7]
 selectImage = pygame.image.load('assets\\Select.png')
+
+class themes():
+    def __init__(self, name):
+        global systemNum, PAGE
+        self.buttonsFile = "assets\\themes\\" + str(name) + "\\buttons"
+        self.backgroundFile = "assets\\themes\\" + str(name) + "\\background"
+        self.buttonsList = []
+        self.backgroundList = []
+        for object in sorted(os.listdir(str(self.buttonsFile)), key=len):
+            self.buttonsList.append(pygame.image.load(str(self.buttonsFile) + "\\" + object))
+        for object in sorted(os.listdir(str(self.backgroundFile)), key=len):
+            self.backgroundList.append(pygame.image.load(str(self.backgroundFile) + "\\" + object))
+
+themeList = []
+maxThemeNum=-1
+skinNum = 0
+for object in os.listdir("assets\\themes"):
+    object = themes(object)
+    themeList.append(object)
+    maxThemeNum+=1
+
+def skin():
+    global maxThemeNum, skinNum, button_list, background_list, theme
+    if maxThemeNum >= 0:
+        if skinNum > maxThemeNum:
+            skinNum = maxThemeNum
+        elif skinNum < 0:
+            skinNum = 0
+        background_list = []
+        background_list = themeList[skinNum].backgroundList
+        button_list = []
+        button_list = themeList[skinNum].buttonsList
+                      
+        theme=button_list[7]
+        for object in main_list:
+            object.skin()
+        for object in options_list:
+            object.skin()
+        for object in page_list:
+            object.skin()
+        print(skinNum)
 
 systems=[]
 system=[]
@@ -128,7 +169,7 @@ class window(pygame.sprite.Sprite):
                 terminate()
             elif PAGE == 1:
                 titleScreen()
-            elif PAGE >= 2 and PAGE <= 6:
+            elif PAGE >= 2 and PAGE <= 6 and not PAGE == 3:
                 systemSelect()
             elif PAGE == 3:
                 settingsSave()
@@ -228,11 +269,70 @@ class window(pygame.sprite.Sprite):
                 windowSurface = pygame.display.set_mode(WINDOWSIZE, FULLSCREEN)
                 isFullscreen = False
                 self.image = button_list[9]
+    def themeClickleft(self):
+        global skinNum
+        if pygame.sprite.spritecollideany(self, select_list):
+            skinNum -= 1
+            skin()
+            settingsSave()
+    def themeClickright(self):
+        global skinNum
+        if pygame.sprite.spritecollideany(self, select_list):
+            skinNum += 1
+            skin()
+            settingsSave()
+    def skin(self):
+        if self == sheikahtext:
+            self.image = pygame.transform.scale(background_list[1], (1536, 480))
+        elif self == background:
+            self.image = pygame.transform.scale(background_list[0], (720, 480))
+        elif self == sheikah:
+            self.image = pygame.transform.scale(background_list[random.randint(2,3)], (720, 480))
+        elif self == backshade:
+            self.image = pygame.transform.scale(theme, (60, 60))
+        elif self == settingsshade:
+            self.image = pygame.transform.scale(theme, (60, 60))
+        elif self == entershade:
+            self.image = pygame.transform.scale(theme, (180, 60))
+        elif self == musicshade:
+            self.image = pygame.transform.scale(theme, (60, 60))
+        elif self == optionsshade:
+            self.image = pygame.transform.scale(theme, (720, 420))
+        elif self == themeshade:
+            self.image = pygame.transform.scale(theme, (200, 60))
+        elif self == leftshade:
+            self.image = pygame.transform.scale(theme, (120, 120))
+        elif self == rightshade:
+            self.image = pygame.transform.scale(theme, (120, 120))
+        elif self == screenshade:
+            self.image = pygame.transform.scale(theme, (60, 60))
+        elif self == back:
+            self.image = pygame.transform.scale(button_list[2], (60, 60))
+        elif self == settings:
+            self.image = pygame.transform.scale(button_list[6], (60, 60))
+        elif self == enter:
+            self.image = pygame.transform.scale(button_list[3], (180, 60))
+        elif self == left:
+            self.image = pygame.transform.scale(button_list[0], (120, 120))
+        elif self == right:
+            self.image = pygame.transform.scale(button_list[1], (120, 120))
+        elif self == theme_button:
+            self.image = pygame.transform.scale(button_list[11], (60, 60))
+        elif self == themeLeft:
+            self.image = pygame.transform.scale(button_list[0], (60, 60))
+        elif self == themeRight:
+            self.image = pygame.transform.scale(button_list[1], (60, 60))
+        elif self == musicamajig:
+            self.image = pygame.transform.scale(button_list[4], (60, 60))
+            self.imagechange()
+        elif self == screen:
+            self.image = pygame.transform.scale(button_list[9], (60, 60))
     def update(self):
         if theme == button_list[8] and self.shade == True:
             self.image = pygame.transform.scale(button_list[8], (self.sizex, self.sizey))
         elif theme == button_list[7] and self.shade == True:
             self.image = pygame.transform.scale(button_list[7], (self.sizex, self.sizey))
+        
 
 def settingsScreen():
     global PAGE, gamesNum, TEXTCOLOUR
@@ -274,6 +374,8 @@ def controls():
                     theme_button.themebutton()
                     musicamajig.musicbutton()
                     screen.screenbutton(False)
+                    themeLeft.themeClickleft()
+                    themeRight.themeClickright()
             if event.button == RIGHT and musicNum > 1:
                 musicamajig.changeMusic()
         if event.type == QUIT:
@@ -294,7 +396,7 @@ def controls():
                     terminate()
                 elif PAGE == 1:
                     titleScreen()
-                elif PAGE >= 2 and PAGE <= 6:
+                elif PAGE >= 2 and PAGE <= 6 and not PAGE == 3:
                     systemSelect()
                 elif PAGE == 3:
                     settingsSave()
@@ -343,8 +445,8 @@ def titleScreen():
     global PAGE, gamesNum, TEXTCOLOUR
     PAGE=0
     while True:
-        DrawText("Emulator Games", font, 32, TEXTCOLOUR, windowSurface, 200, 100, 720, 480)
-        DrawText("5", font, 32, TEXTCOLOUR, windowSurface, 348, 150, 720, 480)
+        DrawText("Emulator Games", font, 32, TEXTCOLOUR, windowSurface, 200, 130, 720, 480)
+        DrawText("5", font, 32, TEXTCOLOUR, windowSurface, 348, 200, 720, 480)
         DrawText(str(gamesNum) + " Games", font, 32, TEXTCOLOUR, windowSurface, 10, 422, 720, 480)
         mainLoop()
 
@@ -398,10 +500,6 @@ def keyboardInput(x, y, Mx, My, letterLimit, fontType, fontSize, textcolour, sur
                     settings.settingsbutton()
                     left.leftbutton()
                     right.rightbutton()
-                    if PAGE == 3:
-                        theme_button.themebutton()
-                        musicamajig.musicbutton()
-                        screen.screenbutton(False)
                 if event.button == RIGHT and musicNum > 1:
                     musicamajig.changeMusic()
             if event.type == QUIT:
@@ -586,12 +684,19 @@ musicamajig = window(button_list[4], 580, 120, 60, 60, False)
 screen = window(button_list[9], 300, 200, 60, 60, False)
 
 def settingsLoad():
-    global theme, TEXTCOLOUR, pause, musicSelect, isFullscreen
+    global theme, TEXTCOLOUR, pause, musicSelect, isFullscreen, skinNum, musicNum
     for object in os.listdir("assets"):
         if object.endswith(".settings"):
             r = open("assets\\" + object, "r")
             words = [word.split('\n') for word in r.read().splitlines()]
             for line in words:
+                if "skin" in str(line):
+                    skinNum = int(line[0].split()[1])
+                    skin()
+                if "musicSelect" in str(line):
+                    musicSelect = int(line[0].split()[1])
+                    pygame.mixer.music.load(musicList[musicSelect])
+                    pygame.mixer.music.play(-1, 0.0)
                 if "theme = darkTheme" in str(line):
                     theme=button_list[7]
                 elif "theme = lightTheme" in str(line):
@@ -617,10 +722,11 @@ def settingsLoad():
                         screen.screenbutton(True)
                     
 def settingsSave():
-    global theme, TEXTCOLOUR, pause, isFullscreen
+    global theme, TEXTCOLOUR, pause, isFullscreen, skinNum, maxSkinNum, musicNum
     for object in os.listdir("assets"):
         if object.endswith(".settings"):
             r = open("assets\\" + object, "w+")
+            r.write("skin " + str(skinNum) + "\n")
             if theme == button_list[7]:
                 r.write("theme = darkTheme \n")
             elif theme == button_list[8]:
@@ -629,14 +735,17 @@ def settingsSave():
                 r.write("pausetrue \n")
             elif pause == False:
                 r.write("pausefalse \n")
-            r.write("musicnum " + str(musicNum) + "\n")
+            r.write("musicSelect " + str(musicSelect) + "\n")
             if isFullscreen == True:
-                r.write("isFullscreen False")
+                r.write("isFullscreen False \n")
             elif isFullscreen == False:
-                r.write("isFullscreen True")
+                r.write("isFullscreen True \n")
+            else:
+                r.write("isFullscreen False \n")
+            
 
 settingsLoad()
-    
+
 background = window(background_list[0], 0, 0, 720, 480, False)
 sheikah = window(background_list[random.randint(2,3)], 0, 0, 720, 480, False)
 sheikahtext = window(background_list[1], 0, 0, 1536, 480, False)
@@ -646,7 +755,6 @@ settingsshade = window(theme, 660, 0, 60, 60, True)
 entershade = window(theme, 270, 420, 180, 60, True)
 musicshade = window(theme, 580, 120, 60, 60, True)
 optionsshade = window(theme, 0, 60, 720, 420, True)
-themeshade = window(theme, 200, 120, 60, 60, True)
 leftshade = window(theme, 0, 360, 120, 120, True)
 rightshade = window(theme, 600, 360, 120, 120, True)
 screenshade = window(theme, 300, 200, 60, 60, True)
@@ -656,7 +764,12 @@ settings = window(button_list[6], 660, 0, 60, 60, False)
 enter = window(button_list[3], 270, 420, 180, 60, False)
 left = window(button_list[0], 0, 360, 120, 120, False)
 right = window(button_list[1], 600, 360, 120, 120, False)
-theme_button = window(button_list[11], 200, 120, 60, 60, False)
+
+theme_button = window(button_list[11], 240, 120, 60, 60, False)
+themeshade = window(theme, 170, 120, 200, 60, True)
+
+themeLeft = window(button_list[0], 180, 120, 60, 60, False)
+themeRight = window(button_list[1], 300, 120, 60, 60, False)
 
 main_list.add(background)
 main_list.add(sheikah)
@@ -669,13 +782,14 @@ options_list.add(optionsshade)
 options_list.add(musicshade)
 options_list.add(themeshade)
 options_list.add(screenshade)
-options_list.add(theme_button)
 page_list.add(leftshade)
 page_list.add(rightshade)
 
 options_list.add(musicamajig)
 options_list.add(enter)
 options_list.add(theme_button)
+options_list.add(themeLeft)
+options_list.add(themeRight)
 options_list.add(screen)
 main_list.add(back)
 main_list.add(settings)
@@ -684,4 +798,5 @@ page_list.add(left)
 page_list.add(right)
 
 select_list.add(select())
+settingsLoad()
 titleScreen()
