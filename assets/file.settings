@@ -1,5 +1,6 @@
-skin 1
-theme = lightTheme 
+skin 0
+theme = darkTheme 
 pausefalse 
 musicSelect 5
 isFullscreen False 
+TEXTCOLOUR = (255, 255, 255)

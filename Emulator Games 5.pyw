@@ -5,7 +5,7 @@ from assets.python.waitForPlayerToPressKey import *
 from assets.python.DrawTextFileFont import *
 from assets.python.keyboardInput import *
 
-version = "Emulator Games 5.2.1"
+version = "Emulator Games 5.2.4"
 WINDOWSIZE = (720, 480)
 BACKGROUNDCOLOR = (0, 0, 0)
 TEXTCOLOUR = (255, 255, 255)
@@ -44,11 +44,16 @@ selectImage = pygame.image.load('assets\\Select.png')
 
 class themes():
     def __init__(self, name):
-        global systemNum, PAGE
+        global systemNum, PAGE, TEXTCOLOUR
         self.buttonsFile = "assets\\themes\\" + str(name) + "\\buttons"
         self.backgroundFile = "assets\\themes\\" + str(name) + "\\background"
         self.buttonsList = []
         self.backgroundList = []
+        self.TEXTCOLOUR = open("assets\\themes\\" + str(name) + "\\TEXTCOLOUR.txt")
+        for line in self.TEXTCOLOUR:
+            if not line == "":
+                self.line = line.split(" ")
+                self.TEXTCOLOUR = (int(self.line[0]), int(self.line[1]), int(self.line[2]))
         for object in sorted(os.listdir(str(self.buttonsFile)), key=len):
             self.buttonsList.append(pygame.image.load(str(self.buttonsFile) + "\\" + object))
         for object in sorted(os.listdir(str(self.backgroundFile)), key=len):
@@ -63,7 +68,7 @@ for object in os.listdir("assets\\themes"):
     maxThemeNum+=1
 
 def skin():
-    global maxThemeNum, skinNum, button_list, background_list, theme
+    global maxThemeNum, skinNum, button_list, background_list, theme, TEXTCOLOUR
     if maxThemeNum >= 0:
         if skinNum > maxThemeNum:
             skinNum = maxThemeNum
@@ -73,7 +78,7 @@ def skin():
         background_list = themeList[skinNum].backgroundList
         button_list = []
         button_list = themeList[skinNum].buttonsList
-                      
+        TEXTCOLOUR = themeList[skinNum].TEXTCOLOUR
         theme=button_list[7]
         for object in main_list:
             object.skin()
@@ -81,7 +86,6 @@ def skin():
             object.skin()
         for object in page_list:
             object.skin()
-        print(skinNum)
 
 systems=[]
 system=[]
@@ -261,14 +265,14 @@ class window(pygame.sprite.Sprite):
     def screenbutton(self, skip):
         global isFullscreen
         if pygame.sprite.spritecollideany(self, select_list) or skip == True:
-            if isFullscreen == False:
+            if bool(isFullscreen) == False:
                 windowSurface = pygame.display.set_mode(WINDOWSIZE)
                 isFullscreen = True
-                self.image = button_list[10]
-            elif isFullscreen == True:
+                self.image = button_list[9]
+            elif bool(isFullscreen) == True:
                 windowSurface = pygame.display.set_mode(WINDOWSIZE, FULLSCREEN)
                 isFullscreen = False
-                self.image = button_list[9]
+                self.image = button_list[10]
     def themeClickleft(self):
         global skinNum
         if pygame.sprite.spritecollideany(self, select_list):
@@ -339,7 +343,7 @@ def settingsScreen():
     PAGE=3
     while True:
         select_list.draw(windowSurface)
-        DrawText("Theme:", font, 32, TEXTCOLOUR, windowSurface, 30, 120, 720, 480)
+        DrawText("Theme:", font, 32, (0, 144, 255), windowSurface, 30, 120, 720, 480)
         DrawText("Music:", font, 32, TEXTCOLOUR, windowSurface, 420, 120, 720, 480)
         DrawText("Screen Mode:", font, 32, TEXTCOLOUR, windowSurface, 30, 200, 720, 480)
         mainLoop()
@@ -714,12 +718,15 @@ def settingsLoad():
                     musicamajig.imagechange()
                 if "isFullscreen" in str(line):
                     isFullscreen = str(line).split(" ")[1]
-                    if isFullscreen[:-2] == "False":
+                    if isFullscreen == "False":
                         isFullscreen=False
                         screen.screenbutton(True)
-                    elif isFullscreen[:-2] == "True":
+                    elif isFullscreen == "True":
                         isFullscreen=True
                         screen.screenbutton(True)
+                if "TEXTCOLOUR" in str(line):
+                    line[0]
+                    #print(line[0])
                     
 def settingsSave():
     global theme, TEXTCOLOUR, pause, isFullscreen, skinNum, maxSkinNum, musicNum
@@ -742,7 +749,7 @@ def settingsSave():
                 r.write("isFullscreen True \n")
             else:
                 r.write("isFullscreen False \n")
-            r.write("TEXTCOLOUR " + str(TEXTCOLOUR) + "\n")
+            r.write("TEXTCOLOUR = " + str(TEXTCOLOUR) + "\n")
             
 
 settingsLoad()
