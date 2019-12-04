@@ -742,6 +742,7 @@ def settingsSave():
                 r.write("isFullscreen True \n")
             else:
                 r.write("isFullscreen False \n")
+            r.write("TEXTCOLOUR " + str(TEXTCOLOUR) + "\n")
             
 
 settingsLoad()

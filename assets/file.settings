@@ -1,5 +1,5 @@
-skin 0
-theme = darkTheme 
+skin 1
+theme = lightTheme 
 pausefalse 
 musicSelect 5
 isFullscreen False 
