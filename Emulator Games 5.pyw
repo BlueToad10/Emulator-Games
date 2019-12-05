@@ -5,7 +5,7 @@ from assets.python.waitForPlayerToPressKey import *
 from assets.python.DrawTextFileFont import *
 from assets.python.keyboardInput import *
 
-version = "Emulator Games 5.2.4"
+version = "Emulator Games 5.2.5"
 WINDOWSIZE = (720, 480)
 BACKGROUNDCOLOR = (0, 0, 0)
 TEXTCOLOUR = (255, 255, 255)
@@ -259,8 +259,8 @@ class window(pygame.sprite.Sprite):
             elif PAGE == 6:
                 os.startfile(str(All[NUMBER]))
     def background(self):
-        self.rect.x = self.rect.x - 1
-        if self.rect.x <= -768:
+        self.rect.x -= 1
+        if self.rect.x == -512:
             self.rect.x = 0
     def screenbutton(self, skip):
         global isFullscreen
