@@ -5,7 +5,7 @@ from assets.python.waitForPlayerToPressKey import *
 from assets.python.DrawTextFileFont import *
 from assets.python.keyboardInput import *
 
-version = "Emulator Games 5.2.5"
+version = "Emulator Games 5.2.6"
 WINDOWSIZE = (720, 480)
 BACKGROUNDCOLOR = (0, 0, 0)
 TEXTCOLOUR = (255, 255, 255)
