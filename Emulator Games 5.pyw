@@ -5,7 +5,10 @@ from assets.python.waitForPlayerToPressKey import *
 from assets.python.DrawTextFileFont import *
 from assets.python.keyboardInput import *
 
-version = "Emulator Games 5.2.6"
+log = open("assets\\log.txt", "w")
+log.write("loading assets and options \n")
+log.flush()
+version = "Emulator Games 5.2.7"
 WINDOWSIZE = (720, 480)
 BACKGROUNDCOLOR = (0, 0, 0)
 TEXTCOLOUR = (255, 255, 255)
@@ -246,7 +249,7 @@ class window(pygame.sprite.Sprite):
             self.image = button_list[5]
             self.play = True
     def enterbutton(self):
-        global PAGE, NUMBER
+        global PAGE, NUMBER, log
         if pygame.sprite.spritecollideany(self, select_list):
             if PAGE == 0 and gamesNum > 0:
                 systemSelect()
@@ -254,10 +257,16 @@ class window(pygame.sprite.Sprite):
                 gameSelect()
             elif PAGE == 2:
                 startrom()
+                log.write("startfile: " + str(system[systemNUMBER]) + " \n")
+                log.flush()
             elif PAGE == 5:
                 os.startfile(str(SearchList[NUMBER]))
+                log.write("startfile: " + str(SearchList[NUMBER]) + " \n")
+                log.flush()
             elif PAGE == 6:
                 os.startfile(str(All[NUMBER]))
+                log.write("startfile: " + str(All[NUMBER]) + " \n")
+                log.flush()
     def background(self):
         self.rect.x -= 1
         if self.rect.x == -512:
@@ -339,8 +348,10 @@ class window(pygame.sprite.Sprite):
         
 
 def settingsScreen():
-    global PAGE, gamesNum, TEXTCOLOUR
+    global PAGE, gamesNum, TEXTCOLOUR, log
     PAGE=3
+    log.write("settings \n")
+    log.flush()
     while True:
         select_list.draw(windowSurface)
         DrawText("Theme:", font, 32, (0, 144, 255), windowSurface, 30, 120, 720, 480)
@@ -363,7 +374,7 @@ class select(pygame.sprite.Sprite):
         self.rect.y = y
 
 def controls():
-    global NUMBER, PAGE, MusicSwitch, musicSelect, musicNum
+    global NUMBER, PAGE, MusicSwitch, musicSelect, musicNum, log
     for event in pygame.event.get():
         if event.type == MOUSEMOTION:
             select_list.update(event.pos[0], event.pos[1])
@@ -412,10 +423,16 @@ def controls():
                     gameSelect()
                 elif PAGE == 2:
                     startrom()
+                    log.write("startfile: " + str(system[systemNUMBER]) + " \n")
+                    log.flush()
                 elif PAGE == 5:
                     os.startfile(str(SearchList[NUMBER]))
+                    log.write("startfile: " + str(SearchList[NUMBER]) + " \n")
+                    log.flush()
                 elif PAGE == 6:
                     os.startfile(str(All[NUMBER]))
+                    log.write("startfile: " + str(All[NUMBER]) + " \n")
+                    log.flush()
             if event.key == K_LEFT or event.key == K_UP:
                 NUMBER -= 1
                 if NUMBER < 0:
@@ -446,8 +463,10 @@ def mainLoop():
     controls()
 
 def titleScreen():
-    global PAGE, gamesNum, TEXTCOLOUR
+    global PAGE, gamesNum, TEXTCOLOUR, log
     PAGE=0
+    log.write("title screen \n")
+    log.flush()
     while True:
         DrawText("Emulator Games", font, 32, TEXTCOLOUR, windowSurface, 200, 130, 720, 480)
         DrawText("5", font, 32, TEXTCOLOUR, windowSurface, 348, 200, 720, 480)
@@ -455,11 +474,12 @@ def titleScreen():
         mainLoop()
 
 def systemSelect():
-    global PAGE, NUMBER, MaxNum, systemNum, TEXTCOLOUR
+    global PAGE, NUMBER, MaxNum, systemNum, TEXTCOLOUR, log
     PAGE=1
     NUMBER=0
     MaxNum = systemNum
     numcheckplz()
+    log.write("system select \n")
     while True:
         select_list.draw(windowSurface)
         if NUMBER > 3:
@@ -600,9 +620,11 @@ def keyboardInput(x, y, Mx, My, letterLimit, fontType, fontSize, textcolour, sur
                     return WORD
 
 def gameSelect():
-    global PAGE, NUMBER, GameName, MaxNum, TEXTCOLOUR, systemNUMBER, gamesNum
+    global PAGE, NUMBER, GameName, MaxNum, TEXTCOLOUR, systemNUMBER, gamesNum, log
     systemNUMBER = NUMBER
     GameName = systems[NUMBER]
+    log.write("game list: " + str(GameName) + " \n")
+    log.flush()
     if GameName == "Search":
         PAGE = 4
         SearchName = keyboardInput(20, 150, 700, 460, 32, font, 32, TEXTCOLOUR, windowSurface)
@@ -729,9 +751,11 @@ def settingsLoad():
                     #print(line[0])
                     
 def settingsSave():
-    global theme, TEXTCOLOUR, pause, isFullscreen, skinNum, maxSkinNum, musicNum
+    global theme, TEXTCOLOUR, pause, isFullscreen, skinNum, maxSkinNum, musicNum, log
     for object in os.listdir("assets"):
         if object.endswith(".settings"):
+            log.write("Saving settings \n")
+            log.flush()
             r = open("assets\\" + object, "w+")
             r.write("skin " + str(skinNum) + "\n")
             if theme == button_list[7]:
@@ -750,9 +774,10 @@ def settingsSave():
             else:
                 r.write("isFullscreen False \n")
             r.write("TEXTCOLOUR = " + str(TEXTCOLOUR) + "\n")
-            
 
 settingsLoad()
+log.write("Setting up \n")
+log.flush()
 
 background = window(background_list[0], 0, 0, 720, 480, False)
 sheikah = window(background_list[random.randint(2,3)], 0, 0, 720, 480, False)
@@ -807,4 +832,6 @@ page_list.add(right)
 
 select_list.add(select())
 settingsLoad()
+log.write("Started \n")
+log.flush()
 titleScreen()
