@@ -8,7 +8,7 @@ from assets.python.keyboardInput import *
 log = open("assets\\log.txt", "w")
 log.write("loading assets and options \n")
 log.flush()
-version = "Emulator Games 5.2.7"
+version = "Emulator Games 5.2.8"
 WINDOWSIZE = (720, 480)
 BACKGROUNDCOLOR = (0, 0, 0)
 TEXTCOLOUR = (255, 255, 255)
@@ -114,21 +114,25 @@ class allList():
                 All.append(str(self.filename) + "\\" + str(object))
                 gamesNum += 1
 
-class searchList():
+class searchLists():
     def __init__(self, name, nameAgain):
         global Searchmaxnum, Search, SearchList
         Searchmaxnum=-1
         Search = []
         SearchList = []
         SearchName = ""
+        self.word = ''
         for object in os.listdir("roms"):
             self.filename = "roms\\" + str(object)
             self.nameAgain = nameAgain
             for object in os.listdir(str(self.filename)):
-                if any(self.nameAgain.lower() in word and len(word) > 1 for word in object.lower().split()) == True:
-                    Search.append(object)
-                    SearchList.append(str(self.filename) + "\\" + str(object))
-                    Searchmaxnum += 1
+                for word in self.nameAgain.lower().split():
+                    self.word = word
+                    for word in object.lower().split():
+                        if self.word == word and not object in Search or self.word in word and not object in Search:
+                            Search.append(object)
+                            SearchList.append(str(self.filename) + "\\" + str(object))
+                            Searchmaxnum += 1
 
 class lists():
     def __init__(self, name, nameAgain):
@@ -510,8 +514,8 @@ def keyboardInput(x, y, Mx, My, letterLimit, fontType, fontSize, textcolour, sur
         sheikahtext.background()
         main_list.draw(windowSurface)
         select_list.draw(windowSurface)
-        DrawText("Type 1 keyword to search", fontType, 32, textcolour, windowSurface, x, y-48, Mx, My)
-        DrawText(WORD, fontType, 32, textcolour, windowSurface, x, y, Mx, My)
+        DrawText("Type a word or phrase of " + str(letterLimit) + " charactors", fontType, 32, textcolour, windowSurface, x, y, Mx, My)
+        DrawText(WORD, fontType, 32, textcolour, windowSurface, x, y+96, Mx, My)
         mainClock.tick(FPS)
         pygame.display.update()
         for event in pygame.event.get():
@@ -628,9 +632,9 @@ def gameSelect():
     if GameName == "Search":
         PAGE = 4
         SearchName = keyboardInput(20, 150, 700, 460, 32, font, 32, TEXTCOLOUR, windowSurface)
-        searchList(SearchName, SearchName)
+        searchLists(SearchName, SearchName)
         NUMBER=0
-        MaxNum=Searchmaxnum
+        MaxNum=Searchmaxnum + 1
         PAGE = 5
         while True:
             if Searchmaxnum < 0:
@@ -748,7 +752,6 @@ def settingsLoad():
                         screen.screenbutton(True)
                 if "TEXTCOLOUR" in str(line):
                     line[0]
-                    #print(line[0])
                     
 def settingsSave():
     global theme, TEXTCOLOUR, pause, isFullscreen, skinNum, maxSkinNum, musicNum, log
