@@ -8,7 +8,10 @@ from assets.python.keyboardInput import *
 log = open("assets\\log.txt", "w")
 log.write("loading assets and options \n")
 log.flush()
-version = "Emulator Games 5.2.8"
+version = "Emulator Games 5.3.0"
+for object in os.listdir("assets"):
+    if str(object).endswith(".ver"):
+        version = "Emulator Games " + str(os.path.splitext(object)[0])
 WINDOWSIZE = (720, 480)
 BACKGROUNDCOLOR = (0, 0, 0)
 TEXTCOLOUR = (255, 255, 255)
@@ -165,14 +168,19 @@ class window(pygame.sprite.Sprite):
     def __init__(self, imageType, x, y, sizex, sizey, shade):
         global theme
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(imageType, (sizex, sizey))
+        if sizex > 0 and sizey > 0:
+            self.image = pygame.transform.scale(imageType, (sizex, sizey))
+        else:
+            self.image = imageType
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.rectx = x
+        self.recty = y
         self.play = False
         self.shade = shade
-        self.sizex = sizex
-        self.sizey = sizey
+        self.sizex = int(str(self.rect[2]).replace(",",""))
+        self.sizey = int(str(self.rect[3]).replace(")>",""))
     def backbutton(self):
         global PAGE
         if pygame.sprite.spritecollideany(self, select_list):
@@ -273,7 +281,7 @@ class window(pygame.sprite.Sprite):
                 log.flush()
     def background(self):
         self.rect.x -= 1
-        if self.rect.x == -512:
+        if self.rect.x == -int(self.sizex / 2):
             self.rect.x = 0
     def screenbutton(self, skip):
         global isFullscreen
@@ -300,7 +308,12 @@ class window(pygame.sprite.Sprite):
             settingsSave()
     def skin(self):
         if self == sheikahtext:
-            self.image = pygame.transform.scale(background_list[1], (1536, 480))
+            self.image = background_list[1]
+            self.rect = self.image.get_rect()
+            self.rect.x = self.rectx
+            self.rect.y = self.recty
+            self.sizex = int(str(self.rect[2]).replace(",",""))
+            self.sizey = int(str(self.rect[3]).replace(")>",""))
         elif self == background:
             self.image = pygame.transform.scale(background_list[0], (720, 480))
         elif self == sheikah:
@@ -784,7 +797,7 @@ log.flush()
 
 background = window(background_list[0], 0, 0, 720, 480, False)
 sheikah = window(background_list[random.randint(2,3)], 0, 0, 720, 480, False)
-sheikahtext = window(background_list[1], 0, 0, 1536, 480, False)
+sheikahtext = window(background_list[1], 0, 0, 0, 0, False)
 
 backshade = window(theme, 0, 0, 60, 60, True)
 settingsshade = window(theme, 660, 0, 60, 60, True)

@@ -1,6 +1,6 @@
 skin 3
 theme = darkTheme 
 pausefalse 
-musicSelect 6
+musicSelect 7
 isFullscreen False 
 TEXTCOLOUR = (255, 255, 255)
