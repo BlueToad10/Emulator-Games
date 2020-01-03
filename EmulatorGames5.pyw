@@ -68,10 +68,11 @@ class themes():
 themeList = []
 maxThemeNum=-1
 skinNum = 0
-for object in os.listdir("assets\\themes"):
-    object = themes(object)
-    themeList.append(object)
-    maxThemeNum+=1
+if os.path.isdir("assets\\themes") == True:
+    for object in os.listdir("assets\\themes"):
+        object = themes(object)
+        themeList.append(object)
+        maxThemeNum+=1
 
 def skin():
     global maxThemeNum, skinNum, button_list, background_list, theme, TEXTCOLOUR
