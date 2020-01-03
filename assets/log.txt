@@ -2,3 +2,8 @@ loading assets and options
 Setting up 
 Started 
 title screen 
+settings 
+Saving settings 
+title screen 
+system select 
+title screen 
