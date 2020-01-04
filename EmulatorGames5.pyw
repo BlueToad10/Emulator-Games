@@ -280,10 +280,6 @@ class window(pygame.sprite.Sprite):
                 os.startfile(str(All[NUMBER]))
                 log.write("startfile: " + str(All[NUMBER]) + " \n")
                 log.flush()
-    def background(self):
-        self.rect.x -= 1
-        if self.rect.x == -int(self.sizex / 2):
-            self.rect.x = 0
     def screenbutton(self, skip):
         global isFullscreen
         if pygame.sprite.spritecollideany(self, select_list) or skip == True:
@@ -307,6 +303,10 @@ class window(pygame.sprite.Sprite):
             skinNum += 1
             skin()
             settingsSave()
+    def background(self):
+        self.rect.x -= 1
+        if self.rect.x <= -int(self.sizex / 2):
+            self.rect.x = 0
     def skin(self):
         if self == sheikahtext:
             self.image = background_list[1]
