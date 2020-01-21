@@ -4,6 +4,7 @@ from assets.python.terminate import *
 from assets.python.waitForPlayerToPressKey import *
 from assets.python.DrawTextFileFont import *
 from assets.python.keyboardInput import *
+from gamebladespy.gameblades import *
 
 log = open("assets\\log.txt", "w")
 log.write("loading assets and options \n")
@@ -22,6 +23,7 @@ PAGE=NUMBER=gamesNum=MaxNum=systemNum=systemNUMBER=0
 GameName = ""
 MusicSwitch=isFullscreen=False
 pause=True
+gameblade="True"
 
 pygame.init()
 pygame.mixer.init()
@@ -29,10 +31,23 @@ pygame.display.set_caption(version)
 icon = pygame.image.load('assets\\icon.png')
 pygame.display.set_icon(icon)
 windowSurface = pygame.display.set_mode(WINDOWSIZE)
+
+for object in os.listdir("assets"):
+    if object.endswith(".settings"):
+        r = open("assets\\" + object, "r")
+        words = [word.split('\n') for word in r.read().splitlines()]
+        for line in words:
+            if "gameblade" in str(line):
+                gameblade = str(line).split(" ")[1]
+        for line in words:
+            if str(gameblade) == "True":
+                if "pausefalse" in str(line):
+                    gamebladeslogo(720/3-40, 480/3, True)
+                elif "pausetrue" in str(line):
+                    gamebladeslogo(720/3-40, 480/3, False)
+
 mainClock = pygame.time.Clock()
 pygame.mixer.music.load("assets\\music\\version_5.mp3")
-pygame.mixer.music.play(-1, 0.0)
-pygame.mixer.music.pause()
 font = "assets\\moon_get-Heavy.ttf"
 
 main_list = pygame.sprite.Group()
@@ -241,6 +256,13 @@ class window(pygame.sprite.Sprite):
                 self.play = True
                 settingsSave()
         MusicSwitch = False
+    def gamebladebutton(self):
+        global gameblade
+        if pygame.sprite.spritecollideany(self, select_list):
+            if gameblade == "True":
+                gameblade = "False"
+            elif gameblade == "False":
+                gameblade = "True"
     def changeMusic(self):
         global musicSelect
         if pygame.sprite.spritecollideany(self, select_list):
@@ -366,7 +388,7 @@ class window(pygame.sprite.Sprite):
         
 
 def settingsScreen():
-    global PAGE, gamesNum, TEXTCOLOUR, log
+    global PAGE, gamesNum, TEXTCOLOUR, log, gameblade
     PAGE=3
     log.write("settings \n")
     log.flush()
@@ -375,6 +397,7 @@ def settingsScreen():
         DrawText("Theme:", font, 32, (0, 144, 255), windowSurface, 30, 120, 720, 480)
         DrawText("Music:", font, 32, TEXTCOLOUR, windowSurface, 420, 120, 720, 480)
         DrawText("Screen Mode:", font, 32, TEXTCOLOUR, windowSurface, 30, 200, 720, 480)
+        DrawText("GameBlade Logo: " + str(gameblade), font, 32, TEXTCOLOUR, windowSurface, 120, 300, 720, 480)
         mainLoop()
         options_list.draw(windowSurface)
         mainClock.tick(FPS)
@@ -403,6 +426,7 @@ def controls():
                 settings.settingsbutton()
                 left.leftbutton()
                 right.rightbutton()
+                gameblade_button.gamebladebutton()
                 if PAGE == 3:
                     theme_button.themebutton()
                     musicamajig.musicbutton()
@@ -537,6 +561,7 @@ def keyboardInput(x, y, Mx, My, letterLimit, fontType, fontSize, textcolour, sur
                 select_list.update(event.pos[0], event.pos[1])
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == LEFT:
+                    settingsSave()
                     back.backbutton()
                     enter.enterbutton()
                     settings.settingsbutton()
@@ -728,7 +753,7 @@ musicamajig = window(button_list[4], 580, 120, 60, 60, False)
 screen = window(button_list[9], 300, 200, 60, 60, False)
 
 def settingsLoad():
-    global theme, TEXTCOLOUR, pause, musicSelect, isFullscreen, skinNum, musicNum
+    global theme, TEXTCOLOUR, pause, musicSelect, isFullscreen, skinNum, musicNum, gameblade
     for object in os.listdir("assets"):
         if object.endswith(".settings"):
             r = open("assets\\" + object, "r")
@@ -737,10 +762,6 @@ def settingsLoad():
                 if "skin" in str(line):
                     skinNum = int(line[0].split()[1])
                     skin()
-                if "musicSelect" in str(line):
-                    musicSelect = int(line[0].split()[1])
-                    pygame.mixer.music.load(musicList[musicSelect])
-                    pygame.mixer.music.play(-1, 0.0)
                 if "theme = darkTheme" in str(line):
                     theme=button_list[7]
                 elif "theme = lightTheme" in str(line):
@@ -756,6 +777,9 @@ def settingsLoad():
                     pygame.mixer.music.pause()
                     pause=True
                     musicamajig.imagechange()
+                if "musicSelect" in str(line):
+                    musicSelect = int(line[0].split()[1])
+                    pygame.mixer.music.load(musicList[musicSelect])
                 if "isFullscreen" in str(line):
                     isFullscreen = str(line).split(" ")[1]
                     if isFullscreen == "False":
@@ -766,6 +790,8 @@ def settingsLoad():
                         screen.screenbutton(True)
                 if "TEXTCOLOUR" in str(line):
                     line[0]
+                if "gameblade" in str(line):
+                    gameblade = str(line).split(" ")[1]
                     
 def settingsSave():
     global theme, TEXTCOLOUR, pause, isFullscreen, skinNum, maxSkinNum, musicNum, log
@@ -790,6 +816,10 @@ def settingsSave():
                 r.write("isFullscreen True \n")
             else:
                 r.write("isFullscreen False \n")
+            if gameblade == "False":
+                r.write("gameblade False \n")
+            elif gameblade == "True":
+                r.write("gameblade True \n")
             r.write("TEXTCOLOUR = " + str(TEXTCOLOUR) + "\n")
 
 settingsLoad()
@@ -821,6 +851,9 @@ themeshade = window(theme, 170, 120, 200, 60, True)
 themeLeft = window(button_list[0], 180, 120, 60, 60, False)
 themeRight = window(button_list[1], 300, 120, 60, 60, False)
 
+gamebladeshade_button = window(theme, 60, 300, 60, 60, True)
+gameblade_button = window(button_list[6], 60, 300, 60, 60, False)
+
 main_list.add(background)
 main_list.add(sheikah)
 main_list.add(sheikahtext)
@@ -841,6 +874,10 @@ options_list.add(theme_button)
 options_list.add(themeLeft)
 options_list.add(themeRight)
 options_list.add(screen)
+
+options_list.add(gamebladeshade_button)
+options_list.add(gameblade_button)
+
 main_list.add(back)
 main_list.add(settings)
 main_list.add(enter)
@@ -849,6 +886,11 @@ page_list.add(right)
 
 select_list.add(select())
 settingsLoad()
+if pause == False:
+    pygame.mixer.music.play(-1, 0.0)
+if pause == True:
+    pygame.mixer.music.play(-1, 0.0)
+    pygame.mixer.music.pause()
 log.write("Started \n")
 log.flush()
 titleScreen()

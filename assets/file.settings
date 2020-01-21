@@ -3,4 +3,5 @@ theme = darkTheme
 pausefalse 
 musicSelect 7
 isFullscreen False 
+gameblade True 
 TEXTCOLOUR = (255, 255, 255)
