@@ -502,6 +502,7 @@ def mainLoop():
     main_list.draw(windowSurface)
     select_list.draw(windowSurface)
     mainClock.tick(FPS)
+    pygame.display.set_caption(str(version) + " | FPS: " + str(int(mainClock.get_fps())))
     controls()
 
 def titleScreen():
