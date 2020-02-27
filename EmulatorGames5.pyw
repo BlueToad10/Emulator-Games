@@ -9,7 +9,7 @@ from gamebladespy.gameblades import *
 log = open("assets\\log.txt", "w")
 log.write("loading assets and options \n")
 log.flush()
-version = "Emulator Games 5.3.0"
+version = "Emulator Games 5"
 for object in os.listdir("assets"):
     if str(object).endswith(".ver"):
         version = "Emulator Games " + str(os.path.splitext(object)[0])
@@ -57,9 +57,9 @@ select_list = pygame.sprite.Group()
 background_list=[]
 button_list=[]
 for object in sorted(os.listdir("assets\\background"), key=len):
-    background_list.append(pygame.image.load("assets\\background\\" + object))
+    background_list.append(pygame.image.load("assets\\background\\" + object).convert_alpha())
 for object in sorted(os.listdir("assets\\buttons"), key=len):
-    button_list.append(pygame.image.load("assets\\buttons\\" + object))
+    button_list.append(pygame.image.load("assets\\buttons\\" + object).convert_alpha())
 theme=button_list[7]
 selectImage = pygame.image.load('assets\\Select.png')
 
@@ -76,9 +76,9 @@ class themes():
                 self.line = line.split(" ")
                 self.TEXTCOLOUR = (int(self.line[0]), int(self.line[1]), int(self.line[2]))
         for object in sorted(os.listdir(str(self.buttonsFile)), key=len):
-            self.buttonsList.append(pygame.image.load(str(self.buttonsFile) + "\\" + object))
+            self.buttonsList.append(pygame.image.load(str(self.buttonsFile) + "\\" + object).convert_alpha())
         for object in sorted(os.listdir(str(self.backgroundFile)), key=len):
-            self.backgroundList.append(pygame.image.load(str(self.backgroundFile) + "\\" + object))
+            self.backgroundList.append(pygame.image.load(str(self.backgroundFile) + "\\" + object).convert_alpha())
 
 themeList = []
 maxThemeNum=-1
@@ -382,9 +382,9 @@ class window(pygame.sprite.Sprite):
             self.image = pygame.transform.scale(button_list[9], (60, 60))
     def update(self):
         if theme == button_list[8] and self.shade == True:
-            self.image = pygame.transform.scale(button_list[8], (self.sizex, self.sizey))
+            self.image = pygame.transform.scale(button_list[8], (self.sizex, self.sizey)).convert_alpha()
         elif theme == button_list[7] and self.shade == True:
-            self.image = pygame.transform.scale(button_list[7], (self.sizex, self.sizey))
+            self.image = pygame.transform.scale(button_list[7], (self.sizex, self.sizey)).convert_alpha()
         
 
 def settingsScreen():
