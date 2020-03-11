@@ -47,8 +47,9 @@ for object in os.listdir("assets"):
                     gamebladeslogo(720/3-40, 480/3, False)
 
 mainClock = pygame.time.Clock()
-pygame.mixer.music.load("assets\\music\\version_5.mp3")
-font = "assets\\moon_get-Heavy.ttf"
+#pygame.mixer.music.load("assets\\music\\version_5.mp3")
+font = "assets\\font.otf"
+fontsize = 1
 
 main_list = pygame.sprite.Group()
 options_list = pygame.sprite.Group()
@@ -394,10 +395,10 @@ def settingsScreen():
     log.flush()
     while True:
         select_list.draw(windowSurface)
-        DrawText("Theme:", font, 32, (0, 144, 255), windowSurface, 30, 120, 720, 480)
-        DrawText("Music:", font, 32, TEXTCOLOUR, windowSurface, 420, 120, 720, 480)
-        DrawText("Screen Mode:", font, 32, TEXTCOLOUR, windowSurface, 30, 200, 720, 480)
-        DrawText("GameBlade Logo: " + str(gameblade), font, 32, TEXTCOLOUR, windowSurface, 120, 300, 720, 480)
+        DrawText("Theme:", font, 32 + fontsize, (0, 144, 255), windowSurface, 30, 120, 720, 480)
+        DrawText("Music:", font, 32 + fontsize, TEXTCOLOUR, windowSurface, 420, 120, 720, 480)
+        DrawText("Screen Mode:", font, 32 + fontsize, TEXTCOLOUR, windowSurface, 30, 200, 720, 480)
+        DrawText("GameBlade Logo: " + str(gameblade), font, 32 + fontsize, TEXTCOLOUR, windowSurface, 120, 300, 720, 480)
         mainLoop()
         options_list.draw(windowSurface)
         mainClock.tick(FPS)
@@ -511,9 +512,9 @@ def titleScreen():
     log.write("title screen \n")
     log.flush()
     while True:
-        DrawText("Emulator Games", font, 32, TEXTCOLOUR, windowSurface, 200, 130, 720, 480)
-        DrawText("5", font, 32, TEXTCOLOUR, windowSurface, 348, 200, 720, 480)
-        DrawText(str(gamesNum) + " Games", font, 32, TEXTCOLOUR, windowSurface, 10, 422, 720, 480)
+        DrawText("Emulator Games", font, 32 + fontsize, TEXTCOLOUR, windowSurface, 200, 130, 720, 480)
+        DrawText("5", font, 32 + fontsize, TEXTCOLOUR, windowSurface, 348, 200, 720, 480)
+        DrawText(str(gamesNum) + " Games", font, 32 + fontsize, TEXTCOLOUR, windowSurface, 10, 422, 720, 480)
         mainLoop()
 
 def systemSelect():
@@ -526,22 +527,22 @@ def systemSelect():
     while True:
         select_list.draw(windowSurface)
         if NUMBER > 3:
-            DrawText(str(system[NUMBER - 4]), font, 16, TEXTCOLOUR, windowSurface, 135, 0, 720, 480)
+            DrawText(str(system[NUMBER - 4]), font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 0, 720, 480)
         if NUMBER > 2:
-            DrawText(str(system[NUMBER - 3]), font, 16, TEXTCOLOUR, windowSurface, 135, 40, 720, 480)
+            DrawText(str(system[NUMBER - 3]), font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 40, 720, 480)
         if NUMBER > 1:
-            DrawText(str(system[NUMBER - 2]), font, 16, TEXTCOLOUR, windowSurface, 135, 80, 720, 480)
+            DrawText(str(system[NUMBER - 2]), font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 80, 720, 480)
         if NUMBER > 0:
-            DrawText(str(system[NUMBER - 1]), font, 16, TEXTCOLOUR, windowSurface, 135, 120, 720, 480)
-        DrawText(str(system[NUMBER]), font, 32, TEXTCOLOUR, windowSurface, 125, 150, 720, 480)
+            DrawText(str(system[NUMBER - 1]), font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 120, 720, 480)
+        DrawText(str(system[NUMBER]), font, 32 + fontsize, TEXTCOLOUR, windowSurface, 125, 150, 720, 480)
         if NUMBER < MaxNum - 1:
-            DrawText(str(system[NUMBER + 1]), font, 16, TEXTCOLOUR, windowSurface, 135, 260, 720, 480)
+            DrawText(str(system[NUMBER + 1]), font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 260, 720, 480)
         if NUMBER < MaxNum - 2:
-            DrawText(str(system[NUMBER + 2]), font, 16, TEXTCOLOUR, windowSurface, 135, 300, 720, 480)
+            DrawText(str(system[NUMBER + 2]), font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 300, 720, 480)
         if NUMBER < MaxNum - 3:
-            DrawText(str(system[NUMBER + 3]), font, 16, TEXTCOLOUR, windowSurface, 135, 340, 720, 480)
+            DrawText(str(system[NUMBER + 3]), font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 340, 720, 480)
         if NUMBER < MaxNum - 4:
-            DrawText(str(system[NUMBER + 4]), font, 16, TEXTCOLOUR, windowSurface, 135, 380, 720, 480)
+            DrawText(str(system[NUMBER + 4]), font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 380, 720, 480)
         page_list.draw(windowSurface)
         mainLoop()
 
@@ -553,8 +554,8 @@ def keyboardInput(x, y, Mx, My, letterLimit, fontType, fontSize, textcolour, sur
         sheikahtext.background()
         main_list.draw(windowSurface)
         select_list.draw(windowSurface)
-        DrawText("Type a word or phrase of " + str(letterLimit) + " charactors", fontType, 32, textcolour, windowSurface, x, y, Mx, My)
-        DrawText(WORD, fontType, 32, textcolour, windowSurface, x, y+96, Mx, My)
+        DrawText("Type a word or phrase of " + str(letterLimit) + " charactors", fontType, 32 + fontsize, textcolour, windowSurface, x, y, Mx, My)
+        DrawText(WORD, fontType, 32 + fontsize, textcolour, windowSurface, x, y+96, Mx, My)
         mainClock.tick(FPS)
         pygame.display.update()
         for event in pygame.event.get():
@@ -671,7 +672,7 @@ def gameSelect():
     log.flush()
     if GameName == "Search":
         PAGE = 4
-        SearchName = keyboardInput(20, 150, 700, 460, 32, font, 32, TEXTCOLOUR, windowSurface)
+        SearchName = keyboardInput(20, 150, 700, 460, 32, font, 32 + fontsize, TEXTCOLOUR, windowSurface)
         searchLists(SearchName, SearchName)
         NUMBER=0
         MaxNum=Searchmaxnum + 1
@@ -680,22 +681,22 @@ def gameSelect():
             if Searchmaxnum < 0:
                 systemSelect()
             if NUMBER > 3:
-                DrawText(os.path.splitext(str(Search[NUMBER - 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 0, 720, 40)
+                DrawText(os.path.splitext(str(Search[NUMBER - 4]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 0, 720, 40)
             if NUMBER > 2:
-                DrawText(os.path.splitext(str(Search[NUMBER - 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 40, 720, 80)
+                DrawText(os.path.splitext(str(Search[NUMBER - 3]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 40, 720, 80)
             if NUMBER > 1:
-                DrawText(os.path.splitext(str(Search[NUMBER - 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 80, 720, 120)
+                DrawText(os.path.splitext(str(Search[NUMBER - 2]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 80, 720, 120)
             if NUMBER > 0:
-                DrawText(os.path.splitext(str(Search[NUMBER - 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 120, 720, 150)
-            DrawText(os.path.splitext(Search[NUMBER])[0], font, 32, TEXTCOLOUR, windowSurface, 20, 150, 720, 260)
+                DrawText(os.path.splitext(str(Search[NUMBER - 1]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 120, 720, 150)
+            DrawText(os.path.splitext(Search[NUMBER])[0], font, 32 + fontsize, TEXTCOLOUR, windowSurface, 20, 150, 720, 260)
             if NUMBER < MaxNum - 1:
-                DrawText(os.path.splitext(str(Search[NUMBER + 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 260, 720, 300)
+                DrawText(os.path.splitext(str(Search[NUMBER + 1]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 260, 720, 300)
             if NUMBER < MaxNum - 2:
-                DrawText(os.path.splitext(str(Search[NUMBER + 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 300, 720, 340)
+                DrawText(os.path.splitext(str(Search[NUMBER + 2]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 300, 720, 340)
             if NUMBER < MaxNum - 3:
-                DrawText(os.path.splitext(str(Search[NUMBER + 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 340, 720, 380)
+                DrawText(os.path.splitext(str(Search[NUMBER + 3]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 340, 720, 380)
             if NUMBER < MaxNum - 4:
-                DrawText(os.path.splitext(str(Search[NUMBER + 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 380, 720, 480)
+                DrawText(os.path.splitext(str(Search[NUMBER + 4]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 380, 720, 480)
             page_list.draw(windowSurface)
             select_list.draw(windowSurface)
             mainLoop()
@@ -705,22 +706,22 @@ def gameSelect():
         NUMBER=0
         while True:
             if NUMBER > 3:
-                DrawText(os.path.splitext(str(gameslist[NUMBER - 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 0, 720, 40)
+                DrawText(os.path.splitext(str(gameslist[NUMBER - 4]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 0, 720, 40)
             if NUMBER > 2:
-                DrawText(os.path.splitext(str(gameslist[NUMBER - 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 40, 720, 80)
+                DrawText(os.path.splitext(str(gameslist[NUMBER - 3]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 40, 720, 80)
             if NUMBER > 1:
-                DrawText(os.path.splitext(str(gameslist[NUMBER - 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 80, 720, 120)
+                DrawText(os.path.splitext(str(gameslist[NUMBER - 2]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 80, 720, 120)
             if NUMBER > 0:
-                DrawText(os.path.splitext(str(gameslist[NUMBER - 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 120, 720, 150)
-            DrawText(os.path.splitext(gameslist[NUMBER])[0], font, 32, TEXTCOLOUR, windowSurface, 20, 150, 720, 260)
+                DrawText(os.path.splitext(str(gameslist[NUMBER - 1]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 120, 720, 150)
+            DrawText(os.path.splitext(gameslist[NUMBER])[0], font, 32 + fontsize, TEXTCOLOUR, windowSurface, 20, 150, 720, 260)
             if NUMBER < MaxNum - 1:
-                DrawText(os.path.splitext(str(gameslist[NUMBER + 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 260, 720, 300)
+                DrawText(os.path.splitext(str(gameslist[NUMBER + 1]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 260, 720, 300)
             if NUMBER < MaxNum - 2:
-                DrawText(os.path.splitext(str(gameslist[NUMBER + 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 300, 720, 340)
+                DrawText(os.path.splitext(str(gameslist[NUMBER + 2]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 300, 720, 340)
             if NUMBER < MaxNum - 3:
-                DrawText(os.path.splitext(str(gameslist[NUMBER + 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 340, 720, 380)
+                DrawText(os.path.splitext(str(gameslist[NUMBER + 3]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 340, 720, 380)
             if NUMBER < MaxNum - 4:
-                DrawText(os.path.splitext(str(gameslist[NUMBER + 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 380, 720, 480)
+                DrawText(os.path.splitext(str(gameslist[NUMBER + 4]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 380, 720, 480)
             page_list.draw(windowSurface)
             select_list.draw(windowSurface)
             mainLoop()
@@ -730,22 +731,22 @@ def gameSelect():
         NUMBER=0
         while True:
             if NUMBER > 3:
-                DrawText(os.path.splitext(str(GameName[NUMBER - 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 0, 720, 40)
+                DrawText(os.path.splitext(str(GameName[NUMBER - 4]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 0, 720, 40)
             if NUMBER > 2:
-                DrawText(os.path.splitext(str(GameName[NUMBER - 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 40, 720, 80)
+                DrawText(os.path.splitext(str(GameName[NUMBER - 3]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 40, 720, 80)
             if NUMBER > 1:
-                DrawText(os.path.splitext(str(GameName[NUMBER - 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 80, 720, 120)
+                DrawText(os.path.splitext(str(GameName[NUMBER - 2]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 80, 720, 120)
             if NUMBER > 0:
-                DrawText(os.path.splitext(str(GameName[NUMBER - 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 120, 720, 150)
-            DrawText(os.path.splitext(GameName[NUMBER])[0], font, 32, TEXTCOLOUR, windowSurface, 20, 150, 720, 260)
+                DrawText(os.path.splitext(str(GameName[NUMBER - 1]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 120, 720, 150)
+            DrawText(os.path.splitext(GameName[NUMBER])[0], font, 32 + fontsize, TEXTCOLOUR, windowSurface, 20, 150, 720, 260)
             if NUMBER < MaxNum - 1:
-                DrawText(os.path.splitext(str(GameName[NUMBER + 1]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 260, 720, 300)
+                DrawText(os.path.splitext(str(GameName[NUMBER + 1]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 260, 720, 300)
             if NUMBER < MaxNum - 2:
-                DrawText(os.path.splitext(str(GameName[NUMBER + 2]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 300, 720, 340)
+                DrawText(os.path.splitext(str(GameName[NUMBER + 2]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 300, 720, 340)
             if NUMBER < MaxNum - 3:
-                DrawText(os.path.splitext(str(GameName[NUMBER + 3]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 340, 720, 380)
+                DrawText(os.path.splitext(str(GameName[NUMBER + 3]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 340, 720, 380)
             if NUMBER < MaxNum - 4:
-                DrawText(os.path.splitext(str(GameName[NUMBER + 4]))[0], font, 16, TEXTCOLOUR, windowSurface, 135, 380, 720, 480)
+                DrawText(os.path.splitext(str(GameName[NUMBER + 4]))[0], font, 16 + fontsize, TEXTCOLOUR, windowSurface, 135, 380, 720, 480)
             page_list.draw(windowSurface)
             select_list.draw(windowSurface)
             mainLoop()
